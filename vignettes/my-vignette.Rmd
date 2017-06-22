@@ -142,6 +142,7 @@ Now, once we have the data out, let's play a bit with it. Let's check if the mea
 
 ```{r plotExample}
 #let's melt the data from the original format, for use with ggplot2
+library(data.table)
 fd_forw_final <- melt(fd_forw, id.vars = c("ID"), measure.vars=c("RS1", "RS2", "RS3","RS4", "RS5", "RS6","RS7", "RS8", "RS9","RS10", "RS11", "RS12","RS13", "RS14", "RS15"))
 
 library(ggplot2)
