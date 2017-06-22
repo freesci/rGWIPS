@@ -1,0 +1,166 @@
+---
+title: "rGWIPS vignette"
+author: "Pawel Szczesny"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+rGWIPS package is a set of functions to automate tasks of getting RiboSeq data for particular genome segments. 
+
+GWIPS-viz database aims to provide on-line tools for the analysis and visualization of ribo-seq data obtained with the ribosome profiling technique. This is the source of data required for rGWIPS database.
+
+## Example data
+
+Let's start with the RiboSeq data for E. coli. GWIPS database hosts data mapped to the most recent assembly version of E. coli K12 sub. MG1655, named ASM584v2. Unfortunately, this genome version isn't available in Bioconductor, so, to avoid mapping errors, let's first build the package for this genome.
+
+The seed file (saved as `seedfile`) looks as follows:
+
+```
+Package: BSgenome.Ecoli.Ensembl.ASM584v2
+Title: Full genome sequence for Escherichia coli K12 substr. MG1655 ASM584v2
+Description: Full genome sequence for Escherichia coli K12 substr. MG1655 ASM584v2 and stored in Biostrings objects.
+Version: 1.0
+organism: Escherichia coli
+common_name: E. coli
+provider: Ensembl
+provider_version: ASM584v2
+release_date: Aug. 2014
+release_name: ASM584v2, INSDC Assembly GCA_000005845.2
+source_url: ftp://ftp.ensemblgenomes.org/pub/bacteria/release-36/
+            fasta/bacteria_0_collection/escherichia_coli_str_k_12_substr_mg1655/dna/
+organism_biocview: Escherichia_coli
+BSgenomeObjname: Ecoli
+seqfile_name: Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.dna.chromosome.Chromosome.2bit
+SrcDataFiles: ftp://ftp.ensemblgenomes.org/pub/bacteria/release-36/fasta/
+              bacteria_0_collection/escherichia_coli_str_k_12_substr_mg1655/dna/
+              Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.dna.chromosome.Chromosome.fa.gz
+seqs_srcdir: /path/to/fasta/files
+```
+
+2BIT file was generated from FASTA file using `faToTwoBit` executable from Kent utils.
+
+Building and installing package:
+
+```
+library(BSgenome)
+forgeBSgenomeDataPkg("seedfile")
+
+#The following command were typed outside of R:
+
+R CMD build BSgenome.Ecoli.Ensembl.ASM584v2 
+R CMD INSTALL BSgenome.Ecoli.Ensembl.ASM584v2_1.0.tar.gz
+```
+
+## GWIPS data
+
+The GWIPS database offers its mapped data as a downloadable bigWig files at: http://gwips.ucc.ie/downloads/index.html 
+
+Let's download data for forward and reverse strands from the study by Liu et. al, 2013. Files required are:  `Liu13_All.RiboProElongFor.bw` and `Liu13_All.RiboProElongRev.bw`. 
+
+```{r}
+library(rGWIPS)
+loadGWIPSdata(forward = "../../rGWIPS_data/Liu13_All.RiboProElongFor.bw", reverse = "../../rGWIPS_data/Liu13_All.RiboProElongRev.bw")
+#GWIPS data are now available as global objects gwips_forw and gwips_rev
+summary(gwips_forw)
+summary(gwips_rev)
+
+```
+
+## Genome annotation
+
+Now we can load genome and its annotation. The GFF3 file corresponding to this genome build is available from Ensembl.
+
+```{r}
+library(BSgenome.Ecoli.Ensembl.ASM584v2)
+features <- import.gff3( "../../rGWIPS_data/Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.32.gff3.txt")
+summary(features)
+```
+
+## Selecting ranges
+
+Let's assume that we want to get data for the beginning of the genes in E.coli. First we need to construct a new Genomic Ranges object, containing only the ranges that are of interest to us. However, before we need to make sure that `seqlevels` in `features` object is the same as in `gwips_forw` and `gwips_rev` objects.
+
+```{r}
+seqlevels(features)
+seqlevels(gwips_forw)
+# obviously there are differences which will create problems downstream. Let's fix it.
+
+gwips_forw <- renameSeqlevels(gwips_forw, "Chromosome")
+gwips_rev <- renameSeqlevels(gwips_rev, "Chromosome")
+
+seqlevels(features)
+seqlevels(gwips_forw)
+
+```
+
+It's all fine, so let's select some data.
+
+```{r}
+sel <- selectFeaturesGR(features, type="start", width=15, feature="gene")
+summary(sel)
+
+```
+You can see that `sel` object is much smaller than the original `features`. It is important to work on the smallest data set possible, because `GRanges` objects can take large amounts of memory.
+
+## Pulling the data out
+
+Now it's time to pull the data out. The format of the output data frame is as follows:
+
+
+```{r}
+data_forw <- overlapsRiboSeq(selected = sel, riboseq = gwips_forw, str = "+")
+data_rev <- overlapsRiboSeq(selected = sel, riboseq = gwips_rev, str = "-")
+
+```
+
+The resulting data frames contain lots of overlapping data. Let's aggregate them.
+
+```{r}
+fd_forw <- aggregateRiboSeq(data_forw, Ecoli, str = "+")
+fd_rev <- aggregateRiboSeq(data_rev, Ecoli, str = "-")
+```
+
+The format of results is as follows:
+
+```
+Column 1: gene/ID
+Column 2: start
+Column 3: end
+Column 4: seqnames (chromosomes)
+Column 5-19: RiboSeq data at each position 1 to 15 (we selected width of 15)
+Column 20-34: nucleotides at each position 1 to 15 
+```
+
+## Figures
+
+The figure sizes have been customised so that you can easily put two images side-by-side. 
+
+```{r, fig.show='hold'}
+plot(1:10)
+plot(10:1)
+```
+
+You can enable figure captions by `fig_caption: yes` in YAML:
+
+    output:
+      rmarkdown::html_vignette:
+        fig_caption: yes
+
+Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+
+## More Examples
+
+You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(mtcars, 10))
+```
+
+Also a quote using `>`:
+
+> "He who gives up [code] safety for [code] speed deserves neither."
+([via](https://twitter.com/hadleywickham/status/504368538874703872))

@@ -1,0 +1,19 @@
+Package: rGWIPS
+Type: Package
+Title: working with RiboSeq data from GWIPS database
+Version: 0.1.0
+Author: Pawel Szczesny
+Maintainer: Pawel Szczesny <ps@pawelszczesny.org>
+Description: set of utilities for importing data in BigWig format and pulling riboseq data out 
+             for selected genomic features
+License: MIT
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
+Imports:
+  rtracklayer,
+  GenomicRanges,
+  data.table
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr
