@@ -16,7 +16,7 @@ overlapsRiboSeq <- function (selected, riboseq, str) {
 
   feat.df <- data.frame(selected)
   riboseq.df <- data.frame(riboseq)
-  feat.df <- subset(feat.df, strand = str)
+  feat.df <- subset(feat.df, strand == str)
   data.table::setDT(feat.df)
   data.table::setDT(riboseq.df)
   data.table::setkey(feat.df, seqnames, start, end)
@@ -58,8 +58,7 @@ aggregateRiboSeq <- function(dt, genome, str) {
   for (name in names){
     riboseq_name <- vector(mode = "numeric")
     tmp_df <- subset(dt, ID == name)
-    sequence <- as.character(getSeq(genome, GRanges(tmp_df[1]$seqnames, IRanges(start = tmp_df[1]$start,
-                                                                                end = tmp_df[1]$end))))
+    sequence <- as.character(BSgenome::getSeq(genome, GRanges(tmp_df[1]$seqnames, IRanges(start = tmp_df[1]$start, end = tmp_df[1]$end))))
 
 
     for (i in  tmp_df[1]$start:tmp_df[1]$end){
