@@ -17,3 +17,5 @@ Imports:
 Suggests: knitr,
     rmarkdown
 VignetteBuilder: knitr
+URL: http://github.com/freesci/rGWIPS
+BugReports: http://github.com/freesci/rGWIPS/issues
