@@ -63,7 +63,10 @@ Let's download data for forward and reverse strands from the study by Liu et. al
 
 ```{r loadData}
 library(rGWIPS)
-loadGWIPSdata(forward = "../extdata/Liu13_All.RiboProElongFor.bw", reverse = "../extdata/Liu13_All.RiboProElongRev.bw")
+for_bw = system.file(package = "rGWIPS", "extdata", "Liu13_All.RiboProElongFor.bw")
+rev_bw = system.file(package = "rGWIPS", "extdata", "Liu13_All.RiboProElongRev.bw")
+
+loadGWIPSdata(forward = for_bw, reverse = rev_bw)
 #GWIPS data are now available as global objects gwips_forw and gwips_rev
 summary(gwips_forw)
 summary(gwips_rev)
@@ -77,7 +80,9 @@ Now we can load genome and its annotation. The GFF3 file corresponding to this g
 ```{r loadFeatures}
 library(BSgenome.Ecoli.Ensembl.ASM584v2)
 #if you haven't build the package yourself, the tar.gz archive is in extdata folder
-features <- import.gff3( "../extdata/Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.32.gff3.txt")
+
+gff_file <- system.file(package="rGWIPS", "extdata", "Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.32.gff3.txt")
+features <- import.gff3(gff_file)
 summary(features)
 ```
 
