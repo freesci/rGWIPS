@@ -9,6 +9,10 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r setup, include=FALSE}
+library(rGWIPS)
+```
+
 rGWIPS package is a set of functions to automate tasks of getting RiboSeq data for particular genome segments. 
 
 GWIPS-viz database aims to provide on-line tools for the analysis and visualization of ribo-seq data obtained with the ribosome profiling technique. This is the source of data required for rGWIPS database.
@@ -62,7 +66,7 @@ The GWIPS database offers its mapped data as a downloadable bigWig files at: htt
 Let's download data for forward and reverse strands from the study by Liu et. al, 2013. Files required are:  `Liu13_All.RiboProElongFor.bw` and `Liu13_All.RiboProElongRev.bw`. 
 
 ```{r loadData}
-library(rGWIPS)
+
 for_bw = system.file(package = "rGWIPS", "extdata", "Liu13_All.RiboProElongFor.bw")
 rev_bw = system.file(package = "rGWIPS", "extdata", "Liu13_All.RiboProElongRev.bw")
 

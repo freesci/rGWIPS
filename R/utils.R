@@ -9,7 +9,6 @@ loadGWIPSdata <- function(forward, reverse){
   #'
   #' @return NULL
   #' @export loadGWIPSdata
-  #' #@examples loadGWIPSdata(forward="path/to/forward.bw", reverse="path/to/reverse.bw")
 
 
   stopifnot( file.exists( forward ) )
@@ -29,7 +28,6 @@ verifySeqLevels <- function(x) {
   #'
   #' @return 0 if seqLevels are different, 1 if everything is OK
   #' @export verifySeqLevels
-  #' #@examples verifySeqLevels(Granges_object)
 
   if (! ( (seqlevels(gwips_forw) == seqlevels(gwips_rev)) && (seqlevels(gwips_rev) == seqlevels(x)) ) ){
     print("Please correct seqlevels in your Granges objects.")

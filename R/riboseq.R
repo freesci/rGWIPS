@@ -11,8 +11,7 @@ overlapsRiboSeq <- function (selected, riboseq, str) {
   #'
   #' @return Data frame with all obervations
   #' @export overlapsRiboSeq
-  #' #@examples overlapsRiboSeq(selected=ecoli_genes_granges, riboseq=gwips_forw, str="+")
-  #'
+
 
   feat.df <- data.frame(selected)
   riboseq.df <- data.frame(riboseq)
@@ -42,8 +41,6 @@ aggregateRiboSeq <- function(x, genome, str) {
   #'
   #' @return Data frame with aggregated data
   #' @export aggregateRiboSeq
-  #' #@examples aggregateRiboSeq(x, genome=Ecoli, str="+")
-  #'
 
   x <- subset(x, start > 0 & i.score > 0)
   names <- unique(x$ID)
@@ -62,7 +59,7 @@ aggregateRiboSeq <- function(x, genome, str) {
       stop(paste(tmp_df[1]$start, tmp_df[1]$start, " -- "))
     }
 
-    sequence <- as.character(BSgenome::getSeq(genome, GRanges(tmp_df[1]$seqnames, IRanges(start = tmp_df[1]$start, end = tmp_df[1]$end))))
+    sequence <- as.character(getSeq(genome, GRanges(tmp_df[1]$seqnames, IRanges(start = tmp_df[1]$start, end = tmp_df[1]$end))))
 
 
     for (i in  tmp_df[1]$start:tmp_df[1]$end){
@@ -74,7 +71,7 @@ aggregateRiboSeq <- function(x, genome, str) {
     }
 
     if (str == "-") {
-      sequence<-as.character(Biostrings::reverseComplement(Biostrings::DNAString(sequence)))
+      sequence<-as.character(reverseComplement(DNAString(sequence)))
       riboseq_name<-rev(riboseq_name)
     }
 
