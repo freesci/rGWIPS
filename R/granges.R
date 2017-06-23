@@ -12,11 +12,11 @@ selectFeaturesGR <- function (gr, type="start", width=10, feature="gene", random
   #'
   #' @return GenomicRange object containing only selected features
   #' @export selectFeaturesGR
-  #' @examples selectFeaturesGR(GRfromGFF, type="end", width=25, feature="exon")
+  #' #@examples selectFeaturesGR(GRfromGFF, type="end", width=25, feature="exon")
   #'
   #' #using random ranges
   #'
-  #' selectFeaturesGR(GRfromGFF, type="random", randomranges=c(89,34,1,4,25))
+  #' #selectFeaturesGR(GRfromGFF, type="random", randomranges=c(89,34,1,4,25))
 
   stopifnot(verifySeqLevels(gr))
   out<-gr[which(elementMetadata(gr)$type == feature)]
@@ -50,7 +50,7 @@ randomGenomicRanges <- function(x, gr) {
   #'
   #' @return GenomicRange object containing randomly selected uniquue ranges of widths requested by vector \code{x}
   #' @export randomGenomicRanges
-  #' @examples randomGenomicRanges(c(4,89,325), GRobject)
+  #' #@examples randomGenomicRanges(c(4,89,325), GRobject)
   #'
   #'
 

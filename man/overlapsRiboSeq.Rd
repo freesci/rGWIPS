@@ -20,7 +20,3 @@ Data frame with all obervations
 \description{
 Returns data frame with witn overlapping regions between selected features and RiboSeq data.
 }
-\examples{
-overlapsRiboSeq(selectec=ecoli_genes_granges, riboseq=gwips_forw, strand="+")
-
-}

@@ -15,6 +15,3 @@ verifySeqLevels(x)
 \description{
 Assumes that global variables gwips_forw and gwips_rev are available. This function checks if the seqLevels in all Genomic Ranges objects are the same. It's a sanity-check function, not to be used directly.
 }
-\examples{
-verifySeqLevels(Granges_object)
-}

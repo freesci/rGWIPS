@@ -11,7 +11,7 @@ overlapsRiboSeq <- function (selected, riboseq, str) {
   #'
   #' @return Data frame with all obervations
   #' @export overlapsRiboSeq
-  #' @examples overlapsRiboSeq(selectec=ecoli_genes_granges, riboseq=gwips_forw, strand="+")
+  #' #@examples overlapsRiboSeq(selected=ecoli_genes_granges, riboseq=gwips_forw, str="+")
   #'
 
   feat.df <- data.frame(selected)
@@ -25,14 +25,14 @@ overlapsRiboSeq <- function (selected, riboseq, str) {
   return(out)
 }
 
-aggregateRiboSeq <- function(dt, genome, str) {
+aggregateRiboSeq <- function(x, genome, str) {
   #' @title aggregateRiboSeq
   #' @description This function analyses the data frame returned by \code{overlapsRiboSeq} function and returns
   #' modified data frame where each position (first:width) of selected Genomic Ranges has its own column.
   #' This function attaches also sequences in its own column and prepares data for further analysis using
   #' machine learning algorithms.
   #'
-  #' @param dt data frame returned by \code{overlapsRiboSeq} function
+  #' @param x data frame returned by \code{overlapsRiboSeq} function
   #' @param genome \code{BSgenome} object containing reference genome
   #' @param str character: +/-/* indicating forward, reverse or both DNA strands; required in case RiboSeq data
   #' is frame agnostic
@@ -42,13 +42,13 @@ aggregateRiboSeq <- function(dt, genome, str) {
   #'
   #' @return Data frame with aggregated data
   #' @export aggregateRiboSeq
-  #' @examples aggregateRiboSeq(dt=dt, genome=Ecoli, str="+")
+  #' #@examples aggregateRiboSeq(x, genome=Ecoli, str="+")
   #'
 
-  dt <- subset(dt, start > 0 & i.score > 0)
-  names <- unique(dt$ID)
+  x <- subset(x, start > 0 & i.score > 0)
+  names <- unique(x$ID)
 
-  len_parts <- max(dt$width)
+  len_parts <- max(x$width)
 
   out <- as.data.frame(matrix(NA, ncol=len_parts*2 + 4, nrow=0))
   colnames(out) <- c("ID", "start", "end", "seqnames", paste("RS", seq(1:len_parts), sep=""),
@@ -57,7 +57,7 @@ aggregateRiboSeq <- function(dt, genome, str) {
 
   for (name in names){
     riboseq_name <- vector(mode = "numeric")
-    tmp_df <- subset(dt, ID == name)
+    tmp_df <- subset(x, ID == name)
     if (!is.numeric(tmp_df[1]$start) | !is.numeric(tmp_df[1]$end)){
       stop(paste(tmp_df[1]$start, tmp_df[1]$start, " -- "))
     }

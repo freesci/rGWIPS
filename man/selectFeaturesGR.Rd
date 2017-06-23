@@ -25,10 +25,3 @@ GenomicRange object containing only selected features
 \description{
 Returns new GRanges object based on the selection criteria.
 }
-\examples{
-selectFeaturesGR(GRfromGFF, type="end", width=25, feature="exon")
-
-#using random ranges
-
-selectFeaturesGR(GRfromGFF, type="random", randomranges=c(89,34,1,4,25))
-}

@@ -14,6 +14,3 @@ loadGWIPSdata(forward, reverse)
 \description{
 Loads data from GWIPS database (in BigWig format) for forward and reverse strands into global GRanges objects. As a result, global objects "gwips_forw" and "gwips_rev" become available for further analyses.
 }
-\examples{
-loadGWIPSdata(forward="path/to/forward.bw", reverse="path/to/reverse.bw")
-}

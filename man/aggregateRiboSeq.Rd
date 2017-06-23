@@ -4,10 +4,10 @@
 \alias{aggregateRiboSeq}
 \title{aggregateRiboSeq}
 \usage{
-aggregateRiboSeq(dt, genome, str)
+aggregateRiboSeq(x, genome, str)
 }
 \arguments{
-\item{dt}{data frame returned by \code{overlapsRiboSeq} function}
+\item{x}{data frame returned by \code{overlapsRiboSeq} function}
 
 \item{genome}{\code{BSgenome} object containing reference genome}
 
@@ -22,8 +22,4 @@ This function analyses the data frame returned by \code{overlapsRiboSeq} functio
 modified data frame where each position (first:width) of selected Genomic Ranges has its own column.
 This function attaches also sequences in its own column and prepares data for further analysis using
 machine learning algorithms.
-}
-\examples{
-aggregateRiboSeq(dt=dt, genome=Ecoli, strand="+")
-
 }

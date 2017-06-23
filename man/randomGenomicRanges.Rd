@@ -19,8 +19,3 @@ Generate random Genomic Ranges given \code{GRanges} object. The resulting
 object will have unique starts, but ranges (depending on the vector of lengths)
 might have overlaps.
 }
-\examples{
-randomGenomicRanges(c(4,89,325), GRobject)
-
-
-}
