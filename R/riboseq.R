@@ -42,7 +42,7 @@ aggregateRiboSeq <- function(dt, genome, str) {
   #'
   #' @return Data frame with aggregated data
   #' @export aggregateRiboSeq
-  #' @examples aggregateRiboSeq(x)
+  #' @examples aggregateRiboSeq(dt=dt, genome=Ecoli, strand="+")
   #'
 
   dt <- subset(dt, start > 0 & i.score > 0)
