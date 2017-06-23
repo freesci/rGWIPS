@@ -11,7 +11,8 @@ overlapsRiboSeq(selected, riboseq, str)
 
 \item{riboseq}{\code{GRanges} object (gwips_forw or gwips_rev) containing RiboSeq coverage data}
 
-\item{str}{character: +/-/* indicating forward, reverse or both DNA strands; required in case RiboSeq data is frame agnostic}
+\item{str}{character: +/-/* indicating forward, reverse or both DNA strands; required in case RiboSeq data
+is frame agnostic}
 }
 \value{
 Data frame with all obervations
