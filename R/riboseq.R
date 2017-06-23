@@ -58,6 +58,10 @@ aggregateRiboSeq <- function(dt, genome, str) {
   for (name in names){
     riboseq_name <- vector(mode = "numeric")
     tmp_df <- subset(dt, ID == name)
+    if (!is.numeric(tmp_df[1]$start) | !is.numeric(tmp_df[1]$end)){
+      stop(paste(tmp_df[1]$start, tmp_df[1]$start, " -- "))
+    }
+
     sequence <- as.character(BSgenome::getSeq(genome, GRanges(tmp_df[1]$seqnames, IRanges(start = tmp_df[1]$start, end = tmp_df[1]$end))))
 
 

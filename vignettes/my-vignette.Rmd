@@ -63,7 +63,7 @@ Let's download data for forward and reverse strands from the study by Liu et. al
 
 ```{r loadData}
 library(rGWIPS)
-loadGWIPSdata(forward = "../../rGWIPS_data/Liu13_All.RiboProElongFor.bw", reverse = "../../rGWIPS_data/Liu13_All.RiboProElongRev.bw")
+loadGWIPSdata(forward = "../extdata/Liu13_All.RiboProElongFor.bw", reverse = "../extdata/Liu13_All.RiboProElongRev.bw")
 #GWIPS data are now available as global objects gwips_forw and gwips_rev
 summary(gwips_forw)
 summary(gwips_rev)
@@ -76,7 +76,8 @@ Now we can load genome and its annotation. The GFF3 file corresponding to this g
 
 ```{r loadFeatures}
 library(BSgenome.Ecoli.Ensembl.ASM584v2)
-features <- import.gff3( "../../rGWIPS_data/Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.32.gff3.txt")
+#if you haven't build the package yourself, the tar.gz archive is in extdata folder
+features <- import.gff3( "../extdata/Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.32.gff3.txt")
 summary(features)
 ```
 
@@ -114,13 +115,11 @@ Now it's time to pull the data out. The format of the output data frame is as fo
 ```{r overlapData}
 data_forw <- overlapsRiboSeq(selected = sel, riboseq = gwips_forw, str = "+")
 data_rev <- overlapsRiboSeq(selected = sel, riboseq = gwips_rev, str = "-")
-
 ```
 
 The resulting data frames contain lots of overlapping data. Let's aggregate them.
 
 ```{r aggregateData, cache=TRUE}
-library(BSgenome.Ecoli.Ensembl.ASM584v2)
 fd_forw <- aggregateRiboSeq(data_forw, Ecoli, str = "+")
 fd_rev <- aggregateRiboSeq(data_rev, Ecoli, str = "-")
 ```
