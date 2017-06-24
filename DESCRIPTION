@@ -18,7 +18,8 @@ Imports:
 Suggests: knitr,
     rmarkdown,
     ggplot2,
-    BSgenome.Ecoli.Ensembl.ASM584v2
+    BSgenome.Ecoli.Ensembl.ASM584v2,
+    testthat
 VignetteBuilder: knitr
 URL: http://github.com/freesci/rGWIPS
 BugReports: http://github.com/freesci/rGWIPS/issues
