@@ -29,6 +29,10 @@ verifySeqLevels <- function(x) {
   #' @return 0 if seqLevels are different, 1 if everything is OK
   #' @export verifySeqLevels
 
+  if (! (exists(gwips_forw) && exists(gwips_rev)) ){
+    stop("Function called directly, gwips_forw or gwips_rev undeclared.")
+  }
+
   if (! ( (seqlevels(gwips_forw) == seqlevels(gwips_rev)) && (seqlevels(gwips_rev) == seqlevels(x)) ) ){
     print("Please correct seqlevels in your Granges objects.")
     return(FALSE)
