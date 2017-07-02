@@ -55,14 +55,14 @@ aggregateRiboSeq <- function(x, genome, str) {
   for (name in names){
     riboseq_name <- vector(mode = "numeric")
     tmp_df <- subset(x, ID == name)
-    if (!is.numeric(tmp_df[1]$start) | !is.numeric(tmp_df[1]$end)){
-      stop(paste(tmp_df[1]$start, tmp_df[1]$start, " -- "))
+    if (!is.numeric(tmp_df[1,]$start) | !is.numeric(tmp_df[1,]$end)){
+      stop(paste(tmp_df[1,]$start, tmp_df[1,]$start, " -- "))
     }
 
-    sequence <- as.character(getSeq(genome, GRanges(tmp_df[1]$seqnames, IRanges(start = tmp_df[1]$start, end = tmp_df[1]$end))))
+    sequence <- as.character(getSeq(genome, GRanges(tmp_df[1,]$seqnames, IRanges(start = tmp_df[1,]$start, end = tmp_df[1,]$end))))
 
 
-    for (i in  tmp_df[1]$start:tmp_df[1]$end){
+    for (i in  tmp_df[1,]$start:tmp_df[1,]$end){
       score <- tmp_df[tmp_df$i.start <= i & tmp_df$i.end >= i]$i.score
       if (length(score) == 0) {
         score=0
@@ -77,8 +77,8 @@ aggregateRiboSeq <- function(x, genome, str) {
 
 
     seq_v <- as.vector(strsplit(sequence, ""))
-    out[nrow(out) + 1,] <- unlist(c(tmp_df[1]$ID, tmp_df[1]$start, tmp_df[1]$end,
-                                    as.character(tmp_df[1]$seqnames), riboseq_name, seq_v))
+    out[nrow(out) + 1,] <- unlist(c(tmp_df[1,]$ID, tmp_df[1,]$start, tmp_df[1,]$end,
+                                    as.character(tmp_df[1,]$seqnames), riboseq_name, seq_v))
 
   }
 
