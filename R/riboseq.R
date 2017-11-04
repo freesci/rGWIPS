@@ -2,7 +2,7 @@
 #' @description Returns data frame with witn overlapping regions between selected features and RiboSeq data.
 #'
 #' @param selected \code{GRanges} object containing genomic features selected by selectFeaturesGR function
-#' @param riboseq \code{GRanges} object (gwips_forw or gwips_rev) containing RiboSeq coverage data
+#' @param riboseq \code{GRanges} object (for example riboseqlist["forward"]) containing RiboSeq coverage data
 #' @param str character: +/-/* indicating forward, reverse or both DNA strands; required in case RiboSeq data
 #' is frame agnostic
 #' @import data.table

@@ -70,10 +70,10 @@ Let's download data for forward and reverse strands from the study by Liu et. al
 for_bw = system.file(package = "rGWIPS", "extdata", "Liu13_All.RiboProElongFor.bw")
 rev_bw = system.file(package = "rGWIPS", "extdata", "Liu13_All.RiboProElongRev.bw")
 
-loadGWIPSdata(forward = for_bw, reverse = rev_bw)
+riboseqlist <- loadGWIPSdata(forward = for_bw, reverse = rev_bw)
 #GWIPS data are now available as global objects gwips_forw and gwips_rev
-summary(gwips_forw)
-summary(gwips_rev)
+summary(riboseqlist["forward"])
+summary(riboseqlist["reverse"])
 
 ```
 
@@ -92,18 +92,18 @@ summary(features)
 
 ## Selecting ranges
 
-Let's assume that we want to get data for the beginning of the genes in E.coli. First we need to construct a new Genomic Ranges object, containing only the ranges that are of interest to us. However, before we need to make sure that `seqlevels` in `features` object is the same as in `gwips_forw` and `gwips_rev` objects.
+Let's assume that we want to get data for the beginning of the genes in E.coli. First we need to construct a new Genomic Ranges object, containing only the ranges that are of interest to us. However, before we need to make sure that `seqlevels` in `features` object is the same as in `riboseqlist` object.
 
 ```{r cleanSeqLevels}
 seqlevels(features)
-seqlevels(gwips_forw)
+seqlevels(riboseqlist["forward"])
 # obviously there are differences which will create problems downstream. Let's fix it.
 
-gwips_forw <- renameSeqlevels(gwips_forw, "Chromosome")
-gwips_rev <- renameSeqlevels(gwips_rev, "Chromosome")
+riboseqlist["forward"] <- renameSeqlevels(riboseqlist["forward"], "Chromosome")
+riboseqlist["reverse"] <- renameSeqlevels(riboseqlist["reverse"], "Chromosome")
 
 seqlevels(features)
-seqlevels(gwips_forw)
+seqlevels(riboseqlist["forward"])
 
 ```
 
@@ -122,8 +122,8 @@ Now it's time to pull the data out. The format of the output data frame is as fo
 
 
 ```{r overlapData}
-data_forw <- overlapsRiboSeq(selected = sel, riboseq = gwips_forw, str = "+")
-data_rev <- overlapsRiboSeq(selected = sel, riboseq = gwips_rev, str = "-")
+data_forw <- overlapsRiboSeq(selected = sel, riboseq = riboseqlist["forward"], str = "+")
+data_rev <- overlapsRiboSeq(selected = sel, riboseq = riboseqlist["reverse"], str = "-")
 ```
 
 The resulting data frames contain lots of overlapping data. Let's aggregate them.
